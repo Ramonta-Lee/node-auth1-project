@@ -6,7 +6,7 @@ const Users = require("../users/users-model.js");
 
 // Add a user
 router.post("/register", (req, res) => {
-  const user = req.body;
+  let user = req.body;
 
   const hash = bcrypt.hashSync(user.password, 13);
 
@@ -16,8 +16,8 @@ router.post("/register", (req, res) => {
     .then(saved => {
       res.status(201).json(saved);
     })
-    .catch(err => {
-      res.status(500).json(err);
+    .catch(({ name, message, stack }) => {
+      res.status(500).json({ name, message, stack });
     });
 });
 
@@ -25,7 +25,7 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
   let { username, password } = req.body;
 
-  Users.findBy({ username })
+  Users.findBy( {username} )
     .first()
     .then(user => {
       console.log("user", user);
@@ -35,8 +35,8 @@ router.post("/login", (req, res) => {
         res.status(401).json({ message: "Invalid Credentials" });
       }
     })
-    .catch(error => {
-      res.status(500).json(error);
+    .catch(({ name, message, stack }) => {
+      res.status(500).json({ name, message, stack });
     });
 });
 

@@ -8,15 +8,16 @@ const usersRouter = require("../users/users-router.js");
 const restricted = require("../auth/restricted-middleware.js");
 
 router.use("/auth", authRouter);
-router.use("/users", usersRouter);
+router.use("/users", restricted, usersRouter);
 
-router.get("/hash", (req, res) => {
-  const authentication = req.headers.authentication;
+// Example of how to hash passwords from the headers.
+// router.get("/hash", (req, res) => {
+//   const authentication = req.headers.authentication;
 
-  const hash = bcrypt.hashSync(authentication, 13);
+//   const hash = bcrypt.hashSync(authentication, 13);
 
-  res.json({ originalValue: authentication, hashedValue: hash });
-});
+//   res.json({ originalValue: authentication, hashedValue: hash });
+// });
 
 router.get("/", (req, res) => {
   res.json({ api: "router working" });
