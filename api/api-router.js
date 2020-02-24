@@ -19,7 +19,7 @@ router.get("/hash", (req, res) => {
 });
 
 router.get("/", (req, res) => {
- res.json({api: "router working"})
-})
+  res.json({ api: "router working" });
+});
 
 module.exports = router;

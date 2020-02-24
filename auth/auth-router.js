@@ -4,8 +4,9 @@ const router = require("express").Router();
 
 const Users = require("../users/users-model.js");
 
+// Add a user
 router.post("/register", (req, res) => {
-  let user = req.body;
+  const user = req.body;
 
   const hash = bcrypt.hashSync(user.password, 13);
 
@@ -20,6 +21,7 @@ router.post("/register", (req, res) => {
     });
 });
 
+// sends login data
 router.post("/login", (req, res) => {
   let { username, password } = req.body;
 
