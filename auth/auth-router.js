@@ -45,7 +45,7 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
-  if (req.session) {
+  if (req.session.loggedIn) {
     req.session.destroy(error => {
       if (error) {
         res.status(500).json({ message: "Unable to logout at this time" });
