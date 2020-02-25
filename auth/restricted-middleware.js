@@ -4,23 +4,30 @@ const Users = require("../users/users-model.js");
 
 module.exports = (req, res, next) => {
   let { username, password } = req.headers;
+
+  if (req.session && req.session.user) {
+    next();
+  } else {
+    res.status(401).json({ message: "Not authorized" });
+  }
+
   // need headers for GETs and Deletes. There is no body in a GET request
 
-  if (username && password) {
-    Users.findBy({ username })
-      .first()
-      .then(user => {
-        console.log("user", user);
-        if (user && bcrypt.compareSync(password, user.password)) {
-          next();
-        } else {
-          res.status(401).json({ message: "Invalid Credentials." });
-        }
-      })
-      .catch(({ name, message, stack }) => {
-        res.status(500).json({ name, message, stack });
-      });
-  } else {
-    res.status(400).json({ error: "please provide credentials" });
-  }
+  //   if (username && password) {
+  //     Users.findBy({ username })
+  //       .first()
+  //       .then(user => {
+  //         console.log("user", user);
+  //         if (user && bcrypt.compareSync(password, user.password)) {
+  //           next();
+  //         } else {
+  //           res.status(401).json({ message: "Invalid Credentials." });
+  //         }
+  //       })
+  //       .catch(({ name, message, stack }) => {
+  //         res.status(500).json({ name, message, stack });
+  //       });
+  //   } else {
+  //     res.status(400).json({ error: "please provide credentials" });
+  //   }
 };
