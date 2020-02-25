@@ -14,6 +14,7 @@ router.post("/register", (req, res) => {
 
   Users.add(user)
     .then(saved => {
+      req.session.loggedIn = true; // A user is logged in when they register
       res.status(201).json(saved);
     })
     .catch(({ name, message, stack }) => {
@@ -28,9 +29,11 @@ router.post("/login", (req, res) => {
   Users.findBy({ username })
     .first()
     .then(user => {
-      console.log("user", user);
+      // console.log("user", user);
       if (user && bcrypt.compareSync(password, user.password)) {
+        req.session.loggedIn = true;
         res.session.user = user;
+        req.session.username = user.username;
         res.status(200).json({ message: `Welcome ${user.username}!` });
       } else {
         res.status(401).json({ message: "Invalid Credentials" });
@@ -45,13 +48,13 @@ router.get("/logout", (req, res) => {
   if (req.session) {
     req.session.destroy(error => {
       if (error) {
-        res.json({ message: "Unable to logout at this time" });
+        res.status(500).json({ message: "Unable to logout at this time" });
       } else {
         res.status(200).json({ message: "You are logged out" });
       }
     });
   } else {
-    res.status(200).json({ message: "You were never logged in" });
+    res.status(200).json({ message: "You are not logged in." });
   }
 });
 
