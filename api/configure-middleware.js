@@ -15,7 +15,7 @@ const sessionConfig = {
     httpOnly: true
   },
   resave: false,
-  saveUninitialized: false, //GDPR compliance; laws against setting cookies automatically.
+  saveUninitialized: true, //GDPR compliance; laws against setting cookies automatically.
   store: new KnexStore({
     knex,
     tablename: "sessions",
