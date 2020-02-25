@@ -6,6 +6,12 @@ const KnexStore = require("connect-session-knex")(session); // remember to curry
 
 const knex = require("../database/dbConfig.js"); // needed for storing sessions into the database
 
+// Configures the CORS to handle the requirements of session cookies.
+const config = {
+  origin: "http://localhost:3000",
+  credentials: true
+};
+
 const sessionConfig = {
   name: "dolphin", // 'sid' is default name
   secret: "Keep it safe, keep it secret",
@@ -28,6 +34,6 @@ const sessionConfig = {
 module.exports = server => {
   server.use(helmet());
   server.use(express.json());
-  server.use(cors());
+  server.use(cors(config));
   server.use(session(sessionConfig));
 };
