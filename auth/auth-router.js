@@ -32,7 +32,7 @@ router.post("/login", (req, res) => {
       // console.log("user", user);
       if (user && bcrypt.compareSync(password, user.password)) {
         req.session.loggedIn = true;
-        res.session.user = user;
+        req.session.user = user;
         req.session.username = user.username;
         res.status(200).json({ message: `Welcome ${user.username}!` });
       } else {
